@@ -4,8 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "php -S 0.0.0.0:$PORT -t .",
-    "healthcheckPath": "/",
-    "healthcheckTimeout": 300
+    "startCommand": "php -S 0.0.0.0:$PORT",
+    "healthcheckPath": "/"
   }
 }
