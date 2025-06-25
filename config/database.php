@@ -32,11 +32,19 @@ class Database {
             $testConn->exec("CREATE DATABASE IF NOT EXISTS " . $this->db_name);
             
             // Now connect to the specific database
-            $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name,
-                $this->username,
-                $this->password
-            );
+            // Support both MySQL and PostgreSQL
+            $database_url = $_ENV['DATABASE_URL'] ?? getenv('DATABASE_URL');
+            if ($database_url) {
+                // Railway PostgreSQL connection
+                $this->conn = new PDO($database_url);
+            } else {
+                // Local MySQL connection
+                $this->conn = new PDO(
+                    "mysql:host=" . $this->host . ";dbname=" . $this->db_name,
+                    $this->username,
+                    $this->password
+                );
+            }
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
             // Create tables if they don't exist
