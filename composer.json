@@ -1,0 +1,12 @@
+{
+    "name": "mitambo/radio-app",
+    "description": "MuciRadio - Multi Radio Streaming Platform",
+    "type": "project",
+    "require": {
+        "php": "^7.4 || ^8.0"
+    },
+    "require-dev": {},
+    "scripts": {
+        "post-install-cmd": []
+    }
+}

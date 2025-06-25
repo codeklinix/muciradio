@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Playlist Height Adjustment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .height-controls {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            align-items: center;
+        }
+        .height-controls input {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .height-controls button {
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .preview-container {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f8f9fa;
+        }
+        iframe {
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Playlist Height Adjustment</h1>
+
+    <div class="test-section">
+        <h2>Height Adjustment Test</h2>
+        <p>Change the height value and click "Update Preview" to test if the iframe height adjusts correctly.</p>
+        
+        <div class="height-controls">
+            <label for="heightInput">Height:</label>
+            <input type="number" id="heightInput" value="400" min="200" max="800" step="50">
+            <span>px</span>
+            <button onclick="updatePreview()">Update Preview</button>
+        </div>
+
+        <div class="preview-container">
+            <h3>Preview (Current Height: <span id="currentHeight">400px</span>)</h3>
+            <div id="previewArea">
+                <iframe id="testIframe" src="about:blank" height="400px">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test with Real Playlist URL</h2>
+        <p>This simulates the actual playlist embed functionality:</p>
+        
+        <div class="height-controls">
+            <label for="playlistHeight">Playlist Height:</label>
+            <input type="number" id="playlistHeight" value="600" min="300" max="800" step="50">
+            <span>px</span>
+            <button onclick="updatePlaylistPreview()">Update Playlist Preview</button>
+        </div>
+
+        <div class="preview-container">
+            <h3>Playlist Preview (Height: <span id="playlistCurrentHeight">600px</span>)</h3>
+            <div id="playlistPreviewArea">
+                <!-- Playlist iframe will be inserted here -->
+                <p>Click "Update Playlist Preview" to load a sample playlist</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Debug Information</h2>
+        <div id="debugInfo">
+            <p>Ready to test...</p>
+        </div>
+    </div>
+
+    <script>
+        function updatePreview() {
+            const height = document.getElementById('heightInput').value;
+            const iframe = document.getElementById('testIframe');
+            const currentHeightSpan = document.getElementById('currentHeight');
+            
+            // Update iframe height
+            iframe.style.height = height + 'px';
+            iframe.height = height;
+            
+            // Update display
+            currentHeightSpan.textContent = height + 'px';
+            
+            // Create a simple test page content
+            const testContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            margin: 20px; 
+                            background: linear-gradient(135deg, #FF6B35, #F7931E);
+                            color: white;
+                            height: ${height - 40}px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        .info { 
+                            text-align: center; 
+                            background: rgba(255,255,255,0.1);
+                            padding: 20px;
+                            border-radius: 10px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="info">
+                        <h2>🎵 Test Iframe</h2>
+                        <p>Current Height: ${height}px</p>
+                        <p>This simulates the playlist player</p>
+                        <p>Time: ${new Date().toLocaleTimeString()}</p>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            iframe.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(testContent);
+            
+            updateDebug(`Updated iframe height to ${height}px`);
+        }
+
+        function updatePlaylistPreview() {
+            const height = document.getElementById('playlistHeight').value;
+            const previewArea = document.getElementById('playlistPreviewArea');
+            const currentHeightSpan = document.getElementById('playlistCurrentHeight');
+            
+            // Simulate the actual playlist embed code generation
+            const sampleStationIds = '1,2,3'; // Sample station IDs
+            const theme = 'orange';
+            const layout = 'vertical';
+            const autoplay = 'false';
+            const shuffle = 'false';
+            
+            const baseUrl = window.location.origin + window.location.pathname.replace('test_playlist_height.html', '');
+            const embedUrl = `${baseUrl}player.php?stations=${sampleStationIds}&theme=${theme}&layout=${layout}&autoplay=${autoplay}&shuffle=${shuffle}`;
+            
+            // Create the iframe with the specified height
+            previewArea.innerHTML = `
+                <iframe 
+                    src="${embedUrl}" 
+                    width="100%" 
+                    height="${height}px" 
+                    frameborder="0"
+                    style="border-radius: 8px;">
+                </iframe>
+            `;
+            
+            // Update display
+            currentHeightSpan.textContent = height + 'px';
+            
+            updateDebug(`Updated playlist preview height to ${height}px. URL: ${embedUrl}`);
+        }
+
+        function updateDebug(message) {
+            const debugInfo = document.getElementById('debugInfo');
+            const timestamp = new Date().toLocaleTimeString();
+            debugInfo.innerHTML += `<p>[${timestamp}] ${message}</p>`;
+        }
+
+        // Initialize with default height
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePreview();
+            updateDebug('Page loaded, ready for testing');
+        });
+    </script>
+</body>
+</html>

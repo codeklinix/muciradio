@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuciRadio - Multi Radio Streaming Platform</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#FF6B35">
+    <meta name="description" content="Stream your favorite radio stations from around the world. Listen to music, news, talk shows and more.">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css?v=<?php echo time(); ?>">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-radio"></i>
+                <h1>MuciRadio</h1>
+            </div>
+            <nav class="nav">
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#stations" class="nav-link">Stations</a></li>
+                    <li><a href="#favorites" class="nav-link">Favorites</a></li>
+                    <li><a href="playlist.html" class="nav-link">Playlists</a></li>
+                    <li><a href="embed.html" class="nav-link">Embed</a></li>
+                    <li><a href="admin.html" class="nav-link">Admin</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Stream Radio Stations Worldwide</h2>
+            <p>Discover and listen to thousands of radio stations from around the globe</p>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search stations, genres, or countries...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        <div class="hero-wave">
+            <svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0,60 C200,120 400,0 600,60 C800,120 1000,0 1200,60 L1200,120 L0,120 Z" fill="#ffffff"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Current Player -->
+    <section class="current-player" id="currentPlayer" style="display: none;">
+        <div class="container">
+            <div class="player-info">
+                <img src="" alt="Station Logo" id="currentLogo" class="current-logo">
+                <div class="player-details">
+                    <h3 id="currentStation">No Station Selected</h3>
+                    <p id="currentGenre">Select a station to start listening</p>
+                </div>
+            </div>
+            <div class="player-controls">
+                <button id="playPauseBtn" class="play-btn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <div class="volume-control">
+                    <i class="fas fa-volume-down"></i>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="50">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+                <button id="favoriteBtn" class="favorite-btn">
+                    <i class="far fa-heart"></i>
+                </button>
+            </div>
+            <audio id="audioPlayer" preload="none"></audio>
+        </div>
+    </section>
+
+    <!-- Genre Filter -->
+    <section class="genre-filter">
+        <div class="container">
+            <h3>Browse by Genre</h3>
+            <div class="genre-buttons">
+                <button class="genre-btn active" data-genre="all">All</button>
+                <button class="genre-btn" data-genre="pop">Pop</button>
+                <button class="genre-btn" data-genre="rock">Rock</button>
+                <button class="genre-btn" data-genre="jazz">Jazz</button>
+                <button class="genre-btn" data-genre="classical">Classical</button>
+                <button class="genre-btn" data-genre="news">News</button>
+                <button class="genre-btn" data-genre="talk">Talk</button>
+                <button class="genre-btn" data-genre="electronic">Electronic</button>
+                <button class="genre-btn" data-genre="country">Country</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Radio Stations -->
+    <section id="stations" class="stations">
+        <div class="container">
+            <h2>Featured Radio Stations</h2>
+            <div class="stations-grid" id="stationsGrid">
+                <!-- Stations will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Favorites Section -->
+    <section id="favorites" class="favorites" style="display: none;">
+        <div class="container">
+            <h2>Your Favorite Stations</h2>
+            <div class="favorites-grid" id="favoritesGrid">
+                <div class="no-favorites">
+                    <i class="fas fa-heart"></i>
+                    <p>No favorite stations yet. Start adding some!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+        <p>Loading stations...</p>
+    </div>
+
+    <!-- Install PWA Prompt -->
+    <div class="install-prompt" id="installPrompt" style="display: none;">
+        <div class="install-content">
+            <i class="fas fa-download"></i>
+            <h3>Install MuciRadio</h3>
+            <p>Install our app for a better experience!</p>
+            <button id="installBtn">Install App</button>
+            <button id="dismissBtn">Maybe Later</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>MuciRadio</h4>
+                    <p>Your gateway to global radio streaming</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <ul>
+                        <li>Live Streaming</li>
+                        <li>Global Stations</li>
+                        <li>Offline Mode</li>
+                        <li>Favorites</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MuciRadio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

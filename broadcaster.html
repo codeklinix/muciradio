@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broadcaster Portal - MuciRadio</title>
+    <link rel="stylesheet" href="styles.css?v=20250625041500">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .broadcaster-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .broadcaster-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 600px;
+        }
+
+        .broadcaster-info {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .broadcaster-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .broadcaster-info p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .broadcaster-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .broadcaster-features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .broadcaster-features i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            color: #FFE4B5;
+        }
+
+        .broadcaster-form {
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: #FF6B35;
+            border-bottom-color: #FF6B35;
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #FF6B35;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .broadcaster-container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .broadcaster-info {
+                padding: 40px 30px;
+            }
+
+            .broadcaster-form {
+                padding: 40px 30px;
+            }
+
+            .broadcaster-info h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="broadcaster-page">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+
+        <div class="broadcaster-container">
+            <div class="broadcaster-info">
+                <i class="fas fa-broadcast-tower" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                <h2>Join Our Network</h2>
+                <p>Add your radio station to our platform and reach listeners worldwide. Manage your stations, track performance, and grow your audience.</p>
+                
+                <ul class="broadcaster-features">
+                    <li>
+                        <i class="fas fa-radio"></i>
+                        Add & manage multiple stations
+                    </li>
+                    <li>
+                        <i class="fas fa-chart-line"></i>
+                        Track listener analytics
+                    </li>
+                    <li>
+                        <i class="fas fa-globe"></i>
+                        Global audience reach
+                    </li>
+                    <li>
+                        <i class="fas fa-tools"></i>
+                        Easy station management
+                    </li>
+                    <li>
+                        <i class="fas fa-crown"></i>
+                        Premium embed players
+                    </li>
+                </ul>
+            </div>
+
+            <div class="broadcaster-form">
+                <div class="form-tabs">
+                    <button class="tab-btn active" data-tab="login">Login</button>
+                    <button class="tab-btn" data-tab="register">Register</button>
+                </div>
+
+                <div class="alert success" id="successAlert"></div>
+                <div class="alert error" id="errorAlert"></div>
+
+                <!-- Login Form -->
+                <div class="form-content active" id="loginForm">
+                    <form id="broadcasterLoginForm">
+                        <div class="form-group">
+                            <label for="loginUsername">Username or Email</label>
+                            <input type="text" id="loginUsername" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" name="password" required>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login to Dashboard
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Register Form -->
+                <div class="form-content" id="registerForm">
+                    <form id="broadcasterRegisterForm">
+                        <div class="form-group">
+                            <label for="regUsername">Username</label>
+                            <input type="text" id="regUsername" name="username" required minlength="3">
+                        </div>
+                        <div class="form-group">
+                            <label for="regEmail">Email Address</label>
+                            <input type="email" id="regEmail" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="regPassword">Password</label>
+                            <input type="password" id="regPassword" name="password" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="regConfirmPassword">Confirm Password</label>
+                            <input type="password" id="regConfirmPassword" name="confirmPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="stationName">Station Name</label>
+                            <input type="text" id="stationName" name="stationName" placeholder="Your radio station name">
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-user-plus"></i>
+                            Create Broadcaster Account
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                
+                // Update tab buttons
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update form content
+                document.querySelectorAll('.form-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(tab + 'Form').classList.add('active');
+                
+                // Clear alerts
+                hideAlerts();
+            });
+        });
+
+        // Alert functions
+        function showAlert(message, type) {
+            hideAlerts();
+            const alert = document.getElementById(type + 'Alert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+        }
+
+        function hideAlerts() {
+            document.getElementById('successAlert').style.display = 'none';
+            document.getElementById('errorAlert').style.display = 'none';
+        }
+
+        // Login form
+        document.getElementById('broadcasterLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            submitBtn.disabled = true;
+            
+            const formData = new FormData(e.target);
+            const data = {
+                action: 'login',
+                username: formData.get('username'),
+                password: formData.get('password'),
+                role: 'radio_owner'
+            };
+            
+            try {
+                const response = await fetch('api/broadcaster_auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('Login successful! Redirecting to dashboard...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'broadcaster_dashboard.html';
+                    }, 1500);
+                } else {
+                    showAlert(result.error || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showAlert('Connection error. Please try again.', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Register form
+        document.getElementById('broadcasterRegisterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirmPassword');
+            
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match', 'error');
+                return;
+            }
+            
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+            submitBtn.disabled = true;
+            
+            const data = {
+                action: 'register',
+                username: formData.get('username'),
+                email: formData.get('email'),
+                password: password,
+                stationName: formData.get('stationName')
+            };
+            
+            try {
+                const response = await fetch('api/broadcaster_auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('Account created successfully! You can now login.', 'success');
+                    // Switch to login tab
+                    document.querySelector('[data-tab="login"]').click();
+                    e.target.reset();
+                } else {
+                    showAlert(result.error || 'Registration failed', 'error');
+                }
+            } catch (error) {
+                showAlert('Connection error. Please try again.', 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

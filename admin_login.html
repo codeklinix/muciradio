@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - MuciRadio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-header {
+            margin-bottom: 30px;
+        }
+
+        .login-header i {
+            font-size: 3rem;
+            color: #FF6B35;
+            margin-bottom: 15px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            margin: 0 0 10px 0;
+            font-size: 1.8rem;
+        }
+
+        .login-header p {
+            color: #666;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .login-form {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #FF6B35;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .login-btn:hover {
+            background: #e55a2e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .login-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .diagnostic-links {
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .diagnostic-links h3 {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .diagnostic-links a {
+            display: inline-block;
+            background: #f8f9fa;
+            color: #666;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 3px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .diagnostic-links a:hover {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .default-credentials {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .default-credentials strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .back-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .back-home a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .back-home a:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px;
+            }
+            
+            .back-home {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="back-home">
+        <a href="index.php">
+            <i class="fas fa-arrow-left"></i>
+            Back to Home
+        </a>
+    </div>
+
+    <div class="login-container">
+        <div class="login-header">
+            <i class="fas fa-user-shield"></i>
+            <h1>Admin Login</h1>
+            <p>Enter your credentials to access the admin panel</p>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <div class="default-credentials">
+            <strong>Default Credentials:</strong>
+            Username: <code>admin</code><br>
+            Password: <code>admin123</code>
+        </div>
+
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="login-btn" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+        </form>
+
+        <div class="diagnostic-links">
+            <h3><i class="fas fa-tools"></i> Diagnostic Tools</h3>
+            <a href="test_js_api.html" target="_blank">
+                <i class="fas fa-code"></i> JS API Test
+            </a>
+            <a href="debug_api.php" target="_blank">
+                <i class="fas fa-bug"></i> API Debug
+            </a>
+            <a href="setup.php" target="_blank">
+                <i class="fas fa-database"></i> Database Setup
+            </a>
+            <a href="fix_images.php" target="_blank">
+                <i class="fas fa-image"></i> Fix Images
+            </a>
+            <a href="test_simple_api.php" target="_blank">
+                <i class="fas fa-flask"></i> Simple API Test
+            </a>
+            <a href="api/stations.php" target="_blank">
+                <i class="fas fa-radio"></i> Stations API
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const alertContainer = document.getElementById('alertContainer');
+
+            // Check if already logged in
+            if (localStorage.getItem('adminLoggedIn') === 'true') {
+                showAlert('You are already logged in!', 'info');
+                setTimeout(() => {
+                    window.location.href = 'admin.html';
+                }, 1500);
+            }
+
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                // Show loading state
+                loginBtn.disabled = true;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+
+                try {
+                    // Authenticate with server
+                    const response = await fetch('api/auth.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            action: 'login',
+                            username: username,
+                            password: password
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        // Store login state
+                        localStorage.setItem('adminLoggedIn', 'true');
+                        localStorage.setItem('adminUser', username);
+                        
+                        showAlert('Login successful! Redirecting...', 'success');
+                        
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 1500);
+                    } else {
+                        showAlert(result.error || 'Invalid credentials', 'error');
+                    }
+                } catch (error) {
+                    console.error('Login error:', error);
+                    
+                    // Fallback login for offline/API issues
+                    if (username === 'admin' && password === 'admin123') {
+                        localStorage.setItem('adminLoggedIn', 'true');
+                        localStorage.setItem('adminUser', username);
+                        
+                        showAlert('Login successful! (Offline mode)', 'success');
+                        
+                        setTimeout(() => {
+                            window.location.href = 'admin.html';
+                        }, 1500);
+                    } else {
+                        showAlert('Network error. Try: admin/admin123', 'error');
+                    }
+                } finally {
+                    // Reset button state
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                }
+            });
+
+            function showAlert(message, type) {
+                alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+                
+                // Auto-hide success messages
+                if (type === 'success') {
+                    setTimeout(() => {
+                        alertContainer.innerHTML = '';
+                    }, 3000);
+                }
+            }
+
+            // Test database connection on page load
+            testConnection();
+
+            async function testConnection() {
+                try {
+                    const response = await fetch('api/stations.php');
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success && data.data.length > 0) {
+                            showAlert(`✅ System ready! Found ${data.data.length} radio stations.`, 'success');
+                        } else {
+                            showAlert('⚠️ Database is empty. Run setup first.', 'info');
+                        }
+                    } else {
+                        showAlert('⚠️ API connection issues. Check diagnostic tools.', 'info');
+                    }
+                } catch (error) {
+                    showAlert('⚠️ Cannot connect to API. Use diagnostic tools below.', 'info');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embed Code Generator - MuciRadio</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        .embed-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .embed-generator {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #FF6B35;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .theme-option {
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .theme-option:hover,
+        .theme-option.active {
+            border-color: #FF6B35;
+            background: #fff5f0;
+        }
+        
+        .embed-preview {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .embed-code-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #FF6B35;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .copy-btn:hover {
+            background: #e55a2b;
+        }
+        
+        .generate-btn {
+            background: linear-gradient(135deg, #FF6B35, #F7931E);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+        
+        .preview-container {
+            border: 2px dashed #e1e5e9;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .size-presets {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .size-preset {
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border: 1px solid #e1e5e9;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .size-preset:hover,
+        .size-preset.active {
+            background: #FF6B35;
+            color: white;
+            border-color: #FF6B35;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .size-presets {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-radio"></i>
+                <h1>MuciRadio</h1>
+            </div>
+            <nav class="nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="index.html#stations" class="nav-link">Stations</a></li>
+                    <li><a href="#embed" class="nav-link active">Embed</a></li>
+                    <li><a href="premium_dashboard.html" class="nav-link">Premium</a></li>
+                    <li><a href="admin.html" class="nav-link">Admin</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="embed-container">
+        <div class="hero" style="text-align: center; margin-bottom: 3rem;">
+            <h1>Embed Code Generator</h1>
+            <p>Create custom embeddable radio players for your website</p>
+        </div>
+
+        <!-- Embed Generator Form -->
+        <div class="embed-generator">
+            <h2><i class="fas fa-cogs"></i> Customize Your Player</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="stationSelect">Select Station</label>
+                    <select id="stationSelect">
+                        <option value="all">All Stations (Player with Station List)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="playerType">Player Type</label>
+                    <select id="playerType">
+                        <option value="full">Full Player</option>
+                        <option value="mini">Mini Player</option>
+                        <option value="button">Play Button Only</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="playerWidth">Width</label>
+                    <input type="number" id="playerWidth" value="400" min="200" max="800">
+                    <div class="size-presets">
+                        <span class="size-preset" data-width="300">Small</span>
+                        <span class="size-preset active" data-width="400">Medium</span>
+                        <span class="size-preset" data-width="600">Large</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="playerHeight">Height</label>
+                    <input type="number" id="playerHeight" value="150" min="80" max="400">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Theme</label>
+                <div class="theme-options">
+                    <div class="theme-option active" data-theme="default">
+                        <i class="fas fa-palette" style="color: #FF6B35;"></i>
+                        <div>Default</div>
+                    </div>
+                    <div class="theme-option" data-theme="dark">
+                        <i class="fas fa-moon" style="color: #2d3748;"></i>
+                        <div>Dark</div>
+                    </div>
+                    <div class="theme-option" data-theme="light">
+                        <i class="fas fa-sun" style="color: #f7fafc;"></i>
+                        <div>Light</div>
+                    </div>
+                    <div class="theme-option" data-theme="minimal">
+                        <i class="fas fa-circle" style="color: #a0aec0;"></i>
+                        <div>Minimal</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="showLogo" checked> Show Logo
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="autoplay"> Autoplay
+                    </label>
+                </div>
+            </div>
+            
+            <button class="generate-btn" onclick="generateEmbed()">
+                <i class="fas fa-code"></i> Generate Embed Code
+            </button>
+        </div>
+
+        <!-- Preview Section -->
+        <div class="embed-preview">
+            <h2><i class="fas fa-eye"></i> Preview</h2>
+            <div class="preview-container" id="previewContainer">
+                <p>Click "Generate Embed Code" to see preview</p>
+            </div>
+        </div>
+
+        <!-- Embed Code Section -->
+        <div class="embed-code-section">
+            <h2><i class="fas fa-code"></i> Embed Code</h2>
+            <p>Copy and paste this code into your website where you want the radio player to appear:</p>
+            
+            <div class="code-block" id="embedCode">
+                <button class="copy-btn" onclick="copyEmbedCode()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+                <div id="codeContent">
+                    <!-- Embed code will be generated here -->
+                    Click "Generate Embed Code" to create your custom player code.
+                </div>
+            </div>
+            
+            <h3>Installation Instructions:</h3>
+            <ol>
+                <li>Copy the embed code above</li>
+                <li>Paste it into your HTML where you want the player</li>
+                <li>The player will automatically load and be ready to use</li>
+                <li>Make sure your website allows iframe embeds from your domain</li>
+            </ol>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>MuciRadio</h4>
+                    <p>Your gateway to global radio streaming</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Tools</h4>
+                    <ul>
+                        <li><a href="embed.html">Embed Generator</a></li>
+                        <li><a href="admin.html">Admin Panel</a></li>
+                        <li><a href="api/stations.php">API</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 MuciRadio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/embed.js"></script>
+</body>
+</html>
